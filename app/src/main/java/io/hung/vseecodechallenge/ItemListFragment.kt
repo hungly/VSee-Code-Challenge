@@ -21,10 +21,8 @@ class ItemListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentItemListBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,11 +33,10 @@ class ItemListFragment : Fragment() {
 
         val onClickListener = View.OnClickListener { itemView ->
             val item = itemView.tag as News
-            val bundle = Bundle()
-            bundle.putString(
-                ItemDetailFragment.ARG_NEWS_URL,
-                item.url
-            )
+            val bundle = Bundle().apply {
+                putString(ItemDetailFragment.ARG_NEWS_URL, item.url)
+                putString(ItemDetailFragment.ARG_NEWS_TITLE, item.title)
+            }
             if (itemDetailFragmentContainer != null) {
                 itemDetailFragmentContainer.findNavController()
                     .navigate(R.id.fragment_item_detail, bundle)

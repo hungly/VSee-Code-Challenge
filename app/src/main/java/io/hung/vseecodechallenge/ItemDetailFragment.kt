@@ -4,22 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import io.hung.vseecodechallenge.databinding.FragmentItemDetailBinding
+
 
 class ItemDetailFragment : Fragment() {
 
     private var _binding: FragmentItemDetailBinding? = null
     private val binding get() = _binding!!
 
-    private var item: String? = null
+    private var url: String? = null
+    private var title: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             if (it.containsKey(ARG_NEWS_URL)) {
-                item = it.getString(ARG_NEWS_URL)
+                url = it.getString(ARG_NEWS_URL)
+            }
+            if (it.containsKey(ARG_NEWS_TITLE)) {
+                title = it.getString(ARG_NEWS_TITLE)
             }
         }
     }
@@ -29,13 +35,24 @@ class ItemDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
-        val rootView = binding.root
+        return binding.root
+    }
 
-        return rootView
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        title?.let {
+            (activity as AppCompatActivity?)?.supportActionBar?.title = it
+        }
+
+        url?.let {
+            binding.wvNews.loadUrl(it.replace("http:", "https:"))
+        }
     }
 
     companion object {
         const val ARG_NEWS_URL = "news_url"
+        const val ARG_NEWS_TITLE = "news_title"
     }
 
     override fun onDestroyView() {
