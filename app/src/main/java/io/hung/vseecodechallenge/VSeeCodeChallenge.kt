@@ -13,7 +13,7 @@ class VSeeCodeChallenge : Application() {
         startKoin {
             androidLogger()
             androidContext(this@VSeeCodeChallenge)
-            modules(appModule)
+            modules(module)
         }
     }
 }

@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.hung.vseecodechallenge.databinding.FragmentItemListBinding
 import io.hung.vseecodechallenge.databinding.ItemListContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemListFragment : Fragment() {
+
+    private val viewModel: ItemListViewModel by viewModel()
 
     private var _binding: FragmentItemListBinding? = null
     private val binding get() = _binding!!
@@ -81,11 +84,11 @@ class ItemListFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
             holder.tvTitle.text = item.title
-            holder.tvDesc.text = item.desc
-            holder.tvTime.text = item.time
+            holder.tvDesc.text = item.description
+            holder.tvTime.text = item.publishedAt
 
             Glide.with(holder.itemView)
-                .load(item.imageUrl)
+                .load(item.urlToImage)
                 .centerCrop()
                 .into(holder.ivImage)
 

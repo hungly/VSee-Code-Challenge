@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -18,9 +19,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_ENDPOINT", "\"https://newsapi.org/v2/\"")
+            buildConfigField("String", "API_KEY", "\"57ed8a7665f0455a805e99bf7c99ee42\"")
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "BASE_ENDPOINT", "\"https://newsapi.org/v2/\"")
+            buildConfigField("String", "API_KEY", "\"57ed8a7665f0455a805e99bf7c99ee42\"")
         }
     }
     compileOptions {
@@ -50,7 +59,6 @@ dependencies {
 
     // Koin for Kotlin Multiplatform
     implementation "io.insert-koin:koin-core:$koin_version"
-
     // Koin main features for Android (Scope,ViewModel ...)
     implementation "io.insert-koin:koin-android:$koin_version"
     // Koin Android - experimental builder extensions
@@ -61,6 +69,13 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    implementation("com.squareup.moshi:moshi:$moshi_version")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi_version")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

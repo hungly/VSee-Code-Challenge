@@ -1,9 +1,12 @@
 package io.hung.vseecodechallenge
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class News(
     val title: String,
-    val desc: String,
+    val description: String,
     val url: String,
-    val imageUrl: String,
-    val time: String
+    val urlToImage: String,
+    val publishedAt: String
 )
