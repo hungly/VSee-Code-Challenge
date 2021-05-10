@@ -31,7 +31,7 @@ val module = module {
 
     single<NewsService> { get<Retrofit>().create(NewsService::class.java) }
 
-    factory { ItemListRepositoryImpl(get()) }
+    factory<ItemListRepository> { ItemListRepositoryImpl(get()) }
 
     viewModel { ItemListViewModel(get()) }
 }

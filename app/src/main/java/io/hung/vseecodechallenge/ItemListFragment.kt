@@ -1,18 +1,22 @@
 package io.hung.vseecodechallenge
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.hung.vseecodechallenge.databinding.FragmentItemListBinding
 import io.hung.vseecodechallenge.databinding.ItemListContentBinding
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class ItemListFragment : Fragment() {
 
@@ -20,6 +24,8 @@ class ItemListFragment : Fragment() {
 
     private var _binding: FragmentItemListBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var adapter: SimpleItemRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,28 +56,31 @@ class ItemListFragment : Fragment() {
         }
 
         setupRecyclerView(recyclerView, onClickListener)
+        setupObservers()
     }
 
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
         onClickListener: View.OnClickListener
     ) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(
-            arrayListOf(
-                News(
-                    "Monday's gossip column",
-                    "Paris St-Germain still keen on Salah, Draxler to extend PSG stay, Bissouma set for Brighton departure, plus more.",
-                    "http://www.bbc.co.uk/sport/57048382",
-                    "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/0B58/production/_118440920_salah_graphic.png",
-                    "2021-05-09T22:37:35.495522Z"
-                )
-            ),
+        adapter = SimpleItemRecyclerViewAdapter(
+            arrayListOf(),
             onClickListener
         )
+        recyclerView.adapter = adapter
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launchWhenResumed {
+            viewModel.newsList.collect {
+                Timber.i("collected")
+                adapter.updateNewsList(it)
+            }
+        }
     }
 
     class SimpleItemRecyclerViewAdapter(
-        private val values: List<News>,
+        private val values: ArrayList<News>,
         private val onClickListener: View.OnClickListener
     ) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -99,6 +108,12 @@ class ItemListFragment : Fragment() {
         }
 
         override fun getItemCount() = values.size
+
+        fun updateNewsList(newsList: List<News>) {
+            values.clear()
+            values.addAll(newsList)
+            notifyDataSetChanged()
+        }
 
         inner class ViewHolder(binding: ItemListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {
