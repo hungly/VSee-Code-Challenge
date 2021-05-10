@@ -2,4 +2,6 @@
     <string name="app_name">VSee Code Challenge</string>
 
     <string name="title_news_list">Top headlines from BBC sport</string>
+
+    <string name="menu_refresh">Refresh News</string>
 </resources>

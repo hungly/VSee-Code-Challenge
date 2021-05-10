@@ -1,7 +1,6 @@
 package io.hung.vseecodechallenge
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import io.hung.vseecodechallenge.databinding.FragmentItemListBinding
 import io.hung.vseecodechallenge.databinding.ItemListContentBinding
@@ -38,7 +38,8 @@ class ItemListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView: RecyclerView = binding.itemList
+        val swipeRefresh = binding.srlRefresh
+        val recyclerView = binding.itemList
         val itemDetailFragmentContainer: View? = view.findViewById(R.id.item_detail_nav_container)
 
         val onClickListener = View.OnClickListener { itemView ->
@@ -55,8 +56,17 @@ class ItemListFragment : Fragment() {
             }
         }
 
+        setupRefresh(swipeRefresh)
         setupRecyclerView(recyclerView, onClickListener)
-        setupObservers()
+        setupObservers(swipeRefresh)
+
+        lifecycleScope.launchWhenCreated { viewModel.loadNews() }
+    }
+
+    private fun setupRefresh(swipeRefresh: SwipeRefreshLayout) {
+        swipeRefresh.setOnRefreshListener {
+            viewModel.loadNews()
+        }
     }
 
     private fun setupRecyclerView(
@@ -70,10 +80,14 @@ class ItemListFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-    private fun setupObservers() {
+    private fun setupObservers(swipeRefresh: SwipeRefreshLayout) {
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            swipeRefresh.isRefreshing = isLoading
+        }
+
         lifecycleScope.launchWhenResumed {
             viewModel.newsList.collect {
-                Timber.i("collected")
+                Timber.d("Collected news")
                 adapter.updateNewsList(it)
             }
         }
