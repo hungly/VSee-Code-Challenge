@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -55,7 +56,15 @@ class ItemListFragment : Fragment() {
         onClickListener: View.OnClickListener
     ) {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(
-            arrayListOf(),
+            arrayListOf(
+                News(
+                    "Monday's gossip column",
+                    "Paris St-Germain still keen on Salah, Draxler to extend PSG stay, Bissouma set for Brighton departure, plus more.",
+                    "http://www.bbc.co.uk/sport/57048382",
+                    "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/0B58/production/_118440920_salah_graphic.png",
+                    "2021-05-09T22:37:35.495522Z"
+                )
+            ),
             onClickListener
         )
     }
@@ -69,13 +78,13 @@ class ItemListFragment : Fragment() {
             val binding =
                 ItemListContentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return ViewHolder(binding)
-
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = "$position"
-            holder.contentView.text = item.url
+            holder.tvTitle.text = item.title
+            holder.tvDesc.text = item.desc
+            holder.tvTime.text = item.time
 
             with(holder.itemView) {
                 tag = item
@@ -87,8 +96,10 @@ class ItemListFragment : Fragment() {
 
         inner class ViewHolder(binding: ItemListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {
-            val idView: TextView = binding.idText
-            val contentView: TextView = binding.content
+            val tvTitle: TextView = binding.tvTitle
+            val tvDesc: TextView = binding.tvDesc
+            val tvTime: TextView = binding.tvTime
+            val ivImage: ImageView = binding.ivImage
         }
     }
 
