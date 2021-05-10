@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import io.hung.vseecodechallenge.databinding.FragmentItemListBinding
 import io.hung.vseecodechallenge.databinding.ItemListContentBinding
 
@@ -82,6 +83,11 @@ class ItemListFragment : Fragment() {
             holder.tvTitle.text = item.title
             holder.tvDesc.text = item.desc
             holder.tvTime.text = item.time
+
+            Glide.with(holder.itemView)
+                .load(item.imageUrl)
+                .centerCrop()
+                .into(holder.ivImage)
 
             with(holder.itemView) {
                 tag = item
