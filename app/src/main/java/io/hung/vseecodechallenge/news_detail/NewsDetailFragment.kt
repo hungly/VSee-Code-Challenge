@@ -1,10 +1,15 @@
 package io.hung.vseecodechallenge.news_detail
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import io.hung.vseecodechallenge.databinding.FragmentNewsDetailBinding
 
@@ -35,6 +40,22 @@ class NewsDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewsDetailBinding.inflate(inflater, container, false)
+
+        binding.wvNews.webChromeClient = WebChromeClient()
+        binding.wvNews.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+
+                binding.pbPageIsLoading.isVisible = true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+
+                binding.pbPageIsLoading.isVisible = false
+            }
+        }
+
         return binding.root
     }
 
