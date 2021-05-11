@@ -4,4 +4,6 @@
     <string name="title_news_list">Top headlines from BBC sport</string>
 
     <string name="menu_refresh">Refresh News</string>
+
+    <string name="news_list_item_publish_date">Published at: %s</string>
 </resources>

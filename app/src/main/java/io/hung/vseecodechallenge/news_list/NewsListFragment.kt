@@ -1,5 +1,6 @@
 package io.hung.vseecodechallenge.news_list
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,13 @@ import com.bumptech.glide.Glide
 import io.hung.vseecodechallenge.R
 import io.hung.vseecodechallenge.databinding.FragmentNewsListBinding
 import io.hung.vseecodechallenge.databinding.NewsListItemBinding
+import io.hung.vseecodechallenge.di.DEP_DATE_FORMAT_INPUT
+import io.hung.vseecodechallenge.di.DEP_DATE_FORMAT_OUTPUT
 import io.hung.vseecodechallenge.model.News
 import io.hung.vseecodechallenge.news_detail.NewsDetailFragment
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class NewsListFragment : Fragment() {
 
@@ -25,6 +30,9 @@ class NewsListFragment : Fragment() {
 
     private var _binding: FragmentNewsListBinding? = null
     private val binding get() = _binding!!
+
+    private val inputDateFormat: SimpleDateFormat by inject(named(DEP_DATE_FORMAT_INPUT))
+    private val outputDateFormat: SimpleDateFormat by inject(named(DEP_DATE_FORMAT_OUTPUT))
 
     private lateinit var adapter: SimpleItemRecyclerViewAdapter
 
@@ -74,7 +82,9 @@ class NewsListFragment : Fragment() {
     ) {
         adapter = SimpleItemRecyclerViewAdapter(
             arrayListOf(),
-            onClickListener
+            onClickListener,
+            inputDateFormat,
+            outputDateFormat
         )
         recyclerView.adapter = adapter
     }
@@ -97,7 +107,9 @@ class NewsListFragment : Fragment() {
 
     class SimpleItemRecyclerViewAdapter(
         private val values: ArrayList<News>,
-        private val onClickListener: View.OnClickListener
+        private val onClickListener: View.OnClickListener,
+        private val inputDateFormat: SimpleDateFormat,
+        private val outputDateFormat: SimpleDateFormat
     ) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -110,10 +122,16 @@ class NewsListFragment : Fragment() {
             val item = values[position]
             holder.tvTitle.text = item.title
             holder.tvDesc.text = item.description
-            holder.tvTime.text = item.publishedAt
+
+            val date = inputDateFormat.parse(item.publishedAt)
+            holder.tvTime.text = holder.itemView.context.getString(
+                R.string.news_list_item_publish_date,
+                outputDateFormat.format(date)
+            )
 
             Glide.with(holder.itemView)
                 .load(item.urlToImage)
+                .placeholder(R.drawable.ic_image)
                 .centerCrop()
                 .into(holder.ivImage)
 
