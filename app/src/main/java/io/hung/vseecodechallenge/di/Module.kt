@@ -9,6 +9,7 @@ import io.hung.vseecodechallenge.ItemListRepositoryImpl
 import io.hung.vseecodechallenge.NewsRepository
 import io.hung.vseecodechallenge.database.VSeeCodeChallengeDatabase
 import io.hung.vseecodechallenge.network.NewsService
+import io.hung.vseecodechallenge.news_detail.NewsDetailViewModel
 import io.hung.vseecodechallenge.news_list.NewsListViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -70,4 +71,6 @@ val module = module {
     factory<NewsRepository> { ItemListRepositoryImpl(get(), get()) }
 
     viewModel { NewsListViewModel(get()) }
+
+    viewModel { NewsDetailViewModel() }
 }

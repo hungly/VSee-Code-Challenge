@@ -2,9 +2,7 @@ package io.hung.vseecodechallenge.news_list
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -35,6 +33,11 @@ class NewsListFragment : Fragment() {
     private val outputDateFormat: SimpleDateFormat by inject(named(DEP_DATE_FORMAT_OUTPUT))
 
     private lateinit var adapter: SimpleItemRecyclerViewAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +71,21 @@ class NewsListFragment : Fragment() {
         setupRefresh(swipeRefresh)
         setupRecyclerView(recyclerView, onClickListener)
         setupObservers(swipeRefresh)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_item_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_refresh -> {
+                viewModel.loadNews()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupRefresh(swipeRefresh: SwipeRefreshLayout) {

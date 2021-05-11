@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import io.hung.vseecodechallenge.databinding.FragmentNewsDetailBinding
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsDetailFragment : Fragment() {
+
+    private val viewModel: NewsDetailViewModel by viewModel()
 
     private var _binding: FragmentNewsDetailBinding? = null
     private val binding get() = _binding!!
@@ -45,14 +47,12 @@ class NewsDetailFragment : Fragment() {
         binding.wvNews.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-
-                binding.pbPageIsLoading.isVisible = true
+                viewModel.isLoading(true)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-
-                binding.pbPageIsLoading.isVisible = false
+                viewModel.isLoading(false)
             }
         }
 
@@ -68,6 +68,10 @@ class NewsDetailFragment : Fragment() {
 
         url?.let {
             binding.wvNews.loadUrl(it.replace("http:", "https:"))
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.pbPageIsLoading.isVisible = it
         }
     }
 
