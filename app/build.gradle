@@ -69,16 +69,25 @@ dependencies {
     // Koin for Jetpack Compose (unstable version)
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
+    implementation "androidx.room:room-runtime:$room_version"
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
 
-    implementation("com.squareup.moshi:moshi:$moshi_version")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi_version")
+    implementation "com.github.haroldadmin:NetworkResponseAdapter:$network_response_adapter_version"
+
+    debugImplementation 'com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6'
+
+    kapt "androidx.room:room-compiler:$room_version"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

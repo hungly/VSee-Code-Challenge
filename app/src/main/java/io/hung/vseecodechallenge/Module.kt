@@ -1,5 +1,7 @@
 package io.hung.vseecodechallenge
 
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -29,9 +31,19 @@ val module = module {
             .build()
     }
 
+    single {
+        Room.databaseBuilder(
+            get(),
+            VSeeCodeChallengeDatabase::class.java,
+            "vsee-code-challenge"
+        ).build()
+    }
+
+    single { get<VSeeCodeChallengeDatabase>().newsDao() }
+
     single<NewsService> { get<Retrofit>().create(NewsService::class.java) }
 
-    factory<NewsRepository> { ItemListRepositoryImpl(get()) }
+    factory<NewsRepository> { ItemListRepositoryImpl(get(), get()) }
 
     viewModel { ItemListViewModel(get()) }
 }

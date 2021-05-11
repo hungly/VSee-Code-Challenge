@@ -59,8 +59,6 @@ class ItemListFragment : Fragment() {
         setupRefresh(swipeRefresh)
         setupRecyclerView(recyclerView, onClickListener)
         setupObservers(swipeRefresh)
-
-        lifecycleScope.launchWhenCreated { viewModel.loadNews() }
     }
 
     private fun setupRefresh(swipeRefresh: SwipeRefreshLayout) {
@@ -85,11 +83,8 @@ class ItemListFragment : Fragment() {
             swipeRefresh.isRefreshing = isLoading
         }
 
-        lifecycleScope.launchWhenResumed {
-            viewModel.newsList.collect {
-                Timber.d("Collected news")
-                adapter.updateNewsList(it)
-            }
+        viewModel.newsList.observe(viewLifecycleOwner) {
+            adapter.updateNewsList(it)
         }
     }
 
