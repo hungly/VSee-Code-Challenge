@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -162,9 +163,12 @@ class NewsListFragment : Fragment() {
         override fun getItemCount() = values.size
 
         fun updateNewsList(newsList: List<News>) {
+            val diffCallback = NewsDiffCallback(values, newsList)
+            val result = DiffUtil.calculateDiff(diffCallback)
+
             values.clear()
             values.addAll(newsList)
-            notifyDataSetChanged()
+            result.dispatchUpdatesTo(this)
         }
 
         inner class ViewHolder(binding: NewsListItemBinding) :
