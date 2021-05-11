@@ -30,7 +30,7 @@ val module = module {
 
     single(named(DEP_DATE_FORMAT_OUTPUT)) {
         SimpleDateFormat(
-            "HH:mm, d MMMM yyyy",
+            "d MMMM yyyy",
             Locale.getDefault()
         )
     }
