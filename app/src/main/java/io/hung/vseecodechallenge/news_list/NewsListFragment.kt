@@ -6,9 +6,12 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -106,6 +109,21 @@ class NewsListFragment : Fragment() {
             outputDateFormat
         )
         recyclerView.adapter = adapter
+
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                recyclerView.context,
+                (recyclerView.layoutManager as LinearLayoutManager).orientation
+            ).apply {
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.drawable_news_divider,
+                    requireContext().theme
+                )?.let {
+                    setDrawable(it)
+                }
+            }
+        )
     }
 
     private fun setupObservers(swipeRefresh: SwipeRefreshLayout) {
