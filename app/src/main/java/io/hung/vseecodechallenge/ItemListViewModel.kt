@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class ItemListViewModel(private val newsRepository: NewsRepository) : ViewModel() {
 
@@ -16,10 +18,13 @@ class ItemListViewModel(private val newsRepository: NewsRepository) : ViewModel(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _isError = MutableLiveData<String?>(null)
+    val isError: LiveData<String?> get() = _isError
+
     init {
         viewModelScope.launch {
             newsRepository.getNews()
-                .catch { }
+                .catch { handleException(it) }
                 .collect {
                     if (it.isEmpty()) {
                         loadNews()
@@ -31,10 +36,28 @@ class ItemListViewModel(private val newsRepository: NewsRepository) : ViewModel(
         }
     }
 
+    fun clearError() {
+        _isError.value = null
+    }
+
     fun loadNews() {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            newsRepository.getNewsFromApi()
+            try {
+                newsRepository.getNewsFromApi()
+            } catch (exception: Exception) {
+                handleException(exception) {
+                    _isLoading.value = false
+                }
+            }
+        }
+    }
+
+    private fun handleException(error: Throwable, postAction: () -> Unit = { }) {
+        viewModelScope.launch {
+            Timber.e(error)
+            _isError.value = error.message
+            postAction()
         }
     }
 }

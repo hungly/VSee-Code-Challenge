@@ -2,6 +2,7 @@ package io.hung.vseecodechallenge
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,6 +27,7 @@ val module = module {
     single<Retrofit> {
         Retrofit.Builder()
             .client(get())
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .baseUrl(BuildConfig.BASE_ENDPOINT)
             .build()

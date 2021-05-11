@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -85,6 +86,12 @@ class ItemListFragment : Fragment() {
 
         viewModel.newsList.observe(viewLifecycleOwner) {
             adapter.updateNewsList(it)
+        }
+
+        viewModel.isError.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            viewModel.clearError()
         }
     }
 

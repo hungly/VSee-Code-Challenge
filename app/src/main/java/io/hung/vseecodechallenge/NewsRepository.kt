@@ -1,5 +1,6 @@
 package io.hung.vseecodechallenge
 
+import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
@@ -19,7 +20,11 @@ class ItemListRepositoryImpl(
     override fun getNews(): Flow<List<News>> = newsList
 
     override suspend fun getNewsFromApi() {
-        val newsFromApi = newsService.getBBCSportNews().articles
-        newsDao.updateNewsList(newsFromApi)
+        when (val response = newsService.getBBCSportNews()) {
+            is NetworkResponse.Success -> response.body.articles?.let { newsDao.updateNewsList(it) }
+            is NetworkResponse.ServerError -> throw response.error
+            is NetworkResponse.NetworkError -> throw response.error
+            is NetworkResponse.UnknownError -> throw response.error
+        }
     }
 }
