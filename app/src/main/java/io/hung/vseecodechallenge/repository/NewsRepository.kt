@@ -1,6 +1,9 @@
 package io.hung.vseecodechallenge
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import io.hung.vseecodechallenge.database.dao.NewsDao
+import io.hung.vseecodechallenge.model.News
+import io.hung.vseecodechallenge.network.NewsService
 import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {

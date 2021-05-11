@@ -1,9 +1,11 @@
 package io.hung.vseecodechallenge
 
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.squareup.moshi.Moshi
+import io.hung.vseecodechallenge.database.VSeeCodeChallengeDatabase
+import io.hung.vseecodechallenge.network.NewsService
+import io.hung.vseecodechallenge.news_list.NewsListViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -47,5 +49,5 @@ val module = module {
 
     factory<NewsRepository> { ItemListRepositoryImpl(get(), get()) }
 
-    viewModel { ItemListViewModel(get()) }
+    viewModel { NewsListViewModel(get()) }
 }

@@ -1,4 +1,4 @@
-package io.hung.vseecodechallenge
+package io.hung.vseecodechallenge.news_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,22 +8,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import io.hung.vseecodechallenge.databinding.FragmentItemListBinding
-import io.hung.vseecodechallenge.databinding.ItemListContentBinding
-import kotlinx.coroutines.flow.collect
+import io.hung.vseecodechallenge.R
+import io.hung.vseecodechallenge.databinding.FragmentNewsListBinding
+import io.hung.vseecodechallenge.databinding.NewsListItemBinding
+import io.hung.vseecodechallenge.model.News
+import io.hung.vseecodechallenge.news_detail.NewsDetailFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
-class ItemListFragment : Fragment() {
+class NewsListFragment : Fragment() {
 
-    private val viewModel: ItemListViewModel by viewModel()
+    private val viewModel: NewsListViewModel by viewModel()
 
-    private var _binding: FragmentItemListBinding? = null
+    private var _binding: FragmentNewsListBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: SimpleItemRecyclerViewAdapter
@@ -32,7 +32,7 @@ class ItemListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentItemListBinding.inflate(inflater, container, false)
+        _binding = FragmentNewsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,8 +46,8 @@ class ItemListFragment : Fragment() {
         val onClickListener = View.OnClickListener { itemView ->
             val item = itemView.tag as News
             val bundle = Bundle().apply {
-                putString(ItemDetailFragment.ARG_NEWS_URL, item.url)
-                putString(ItemDetailFragment.ARG_NEWS_TITLE, item.title)
+                putString(NewsDetailFragment.ARG_NEWS_URL, item.url)
+                putString(NewsDetailFragment.ARG_NEWS_TITLE, item.title)
             }
             if (itemDetailFragmentContainer != null) {
                 itemDetailFragmentContainer.findNavController()
@@ -102,7 +102,7 @@ class ItemListFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val binding =
-                ItemListContentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                NewsListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return ViewHolder(binding)
         }
 
@@ -131,7 +131,7 @@ class ItemListFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-        inner class ViewHolder(binding: ItemListContentBinding) :
+        inner class ViewHolder(binding: NewsListItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val tvTitle: TextView = binding.tvTitle
             val tvDesc: TextView = binding.tvDesc

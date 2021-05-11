@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_item_detail">
     <fragment
         android:id="@+id/fragment_item_detail"
-        android:name="io.hung.vseecodechallenge.ItemDetailFragment"
-        tools:layout="@layout/fragment_item_detail" />
+        android:name="io.hung.vseecodechallenge.news_detail.NewsDetailFragment"
+        tools:layout="@layout/fragment_news_detail" />
 
 </navigation>

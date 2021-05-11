@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/item_list_fragment"
-        android:name="io.hung.vseecodechallenge.ItemListFragment"
+        android:name="io.hung.vseecodechallenge.news_list.NewsListFragment"
         android:label="@string/title_news_list">
         <action
             android:id="@+id/show_item_detail"
@@ -15,6 +15,6 @@
     </fragment>
     <fragment
         android:id="@+id/item_detail_fragment"
-        android:name="io.hung.vseecodechallenge.ItemDetailFragment"
-        tools:layout="@layout/fragment_item_detail" />
+        android:name="io.hung.vseecodechallenge.news_detail.NewsDetailFragment"
+        tools:layout="@layout/fragment_news_detail" />
 </navigation>

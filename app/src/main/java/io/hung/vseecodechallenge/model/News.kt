@@ -1,4 +1,4 @@
-package io.hung.vseecodechallenge
+package io.hung.vseecodechallenge.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

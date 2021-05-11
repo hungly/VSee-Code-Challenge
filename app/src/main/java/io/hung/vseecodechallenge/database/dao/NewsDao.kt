@@ -1,6 +1,10 @@
-package io.hung.vseecodechallenge
+package io.hung.vseecodechallenge.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
+import io.hung.vseecodechallenge.model.News
 import kotlinx.coroutines.flow.Flow
 
 @Dao

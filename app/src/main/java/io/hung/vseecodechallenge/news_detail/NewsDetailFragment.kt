@@ -1,4 +1,4 @@
-package io.hung.vseecodechallenge
+package io.hung.vseecodechallenge.news_detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import io.hung.vseecodechallenge.databinding.FragmentItemDetailBinding
+import io.hung.vseecodechallenge.databinding.FragmentNewsDetailBinding
 
 
-class ItemDetailFragment : Fragment() {
+class NewsDetailFragment : Fragment() {
 
-    private var _binding: FragmentItemDetailBinding? = null
+    private var _binding: FragmentNewsDetailBinding? = null
     private val binding get() = _binding!!
 
     private var url: String? = null
@@ -34,7 +34,7 @@ class ItemDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentNewsDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
