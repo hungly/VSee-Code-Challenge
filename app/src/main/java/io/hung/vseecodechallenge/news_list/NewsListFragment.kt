@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -70,6 +71,10 @@ class NewsListFragment : Fragment() {
             } else {
                 itemView.findNavController().navigate(R.id.show_item_detail, bundle)
             }
+        }
+
+        binding.etSearch.addTextChangedListener {
+            viewModel.search(it.toString())
         }
 
         setupRefresh(swipeRefresh)

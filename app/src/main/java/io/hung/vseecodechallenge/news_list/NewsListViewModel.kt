@@ -13,6 +13,8 @@ import timber.log.Timber
 
 class NewsListViewModel(private val newsRepository: NewsRepository) : ViewModel() {
 
+    private val originalNewsList: ArrayList<News> = arrayListOf()
+
     private val _newList = MutableLiveData<List<News>>()
     val newsList: LiveData<List<News>> get() = _newList
 
@@ -31,6 +33,8 @@ class NewsListViewModel(private val newsRepository: NewsRepository) : ViewModel(
                         loadNews()
                         return@collect
                     }
+                    originalNewsList.clear()
+                    originalNewsList.addAll(it)
                     _newList.value = it
                     _isLoading.value = false
                 }
@@ -52,6 +56,14 @@ class NewsListViewModel(private val newsRepository: NewsRepository) : ViewModel(
                 }
             }
         }
+    }
+
+    fun search(searchKey: String?) {
+        if (searchKey.isNullOrEmpty()) {
+            _newList.value = originalNewsList
+            return
+        }
+        _newList.value = originalNewsList.filter { it.title.contains(searchKey) }
     }
 
     private fun handleException(error: Throwable, postAction: () -> Unit = { }) {

@@ -6,4 +6,5 @@
     <string name="menu_refresh">Refresh News</string>
 
     <string name="news_list_item_publish_date">Published on %s</string>
+    <string name="search">Search</string>
 </resources>
